@@ -1,0 +1,8 @@
+language: python
+
+install:
+  - pip install -r requirements.txt  # Install dependencies
+
+script:
+  - python --version  # Display Python version
+  - python manage.py test  # Run Django tests
