@@ -4,13 +4,25 @@ python:
   - "3.10"
 
 install:
-  - pip install -r requirements.txt  # Install dependencies
+  - pip install -r requirements.txt
 
 script:
-  - black --check .  # Check code formatting
-  - flake8 .  # Run linter
-  - coverage run --source='.' manage.py test  # Run tests with coverage
+  - black --check .
+  - flake8 .
+  - coverage run manage.py test
 
-after_success:
-  - coverage report  # Display coverage report in logs
-  - coveralls  # Upload coverage report to Coveralls
+after_script:
+  - coveralls --service=travis-pro
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: "$AWS_ACCESS_KEY_ID"
+  secret_access_key: "$AWS_SECRET_ACCESS_KEY"   # set in Travis CI env variables
+  region: "us-west-2"
+  app: "swe1-app3"
+  env: "swe1-app3"
+  bucket_name: "elasticbeanstalk-us-west-2-307946634982"
+  on:
+    repo: allan-ma1/swe1-app
+    branch: main  # Deploy only on the main branch
+  skip_cleanup: true
