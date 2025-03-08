@@ -1,7 +1,7 @@
 language: python
-dist: focal  # Use Ubuntu 20.04 instead of 16.04
+dist: focal
 python:
-  - "3.10"  # Ensure Python 3.10 is available
+  - "3.10"
 
 install:
   - pip install -r requirements.txt  # Install dependencies
@@ -9,4 +9,8 @@ install:
 script:
   - black --check .  # Check code formatting
   - flake8 .  # Run linter
-  - echo "Linting and formatting checks complete"
+  - coverage run --source='.' manage.py test  # Run tests with coverage
+
+after_success:
+  - coverage report  # Display coverage report in logs
+  - coveralls  # Upload coverage report to Coveralls
